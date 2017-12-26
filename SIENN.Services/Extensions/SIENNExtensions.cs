@@ -40,8 +40,8 @@ namespace SIENN.Services.Extensions
                 cfg.CreateMap<ProductCategoryDto, ProductCategory>();
 
                 cfg.CreateMap<Product, ProductDto>()
-                    .ForMember(x => x.Categories, opts => opts.MapFrom(dest => 
-                        dest.Categories.Select(x => new ProductCategoryDto { Code = x.Category.Code, Name = x.Category.Name })));
+                    .ForMember(x => x.Categories, opts => opts.MapFrom(dest =>
+                        dest.Categories.Select(x => new ProductCategoryDto { Code = x.CategoryCode, Name = x.Category != null ? x.Category.Name : string.Empty })));
 
                 cfg.CreateMap<ProductDto, Product>()
                     .ForMember(x => x.Type, opts => opts.Ignore())

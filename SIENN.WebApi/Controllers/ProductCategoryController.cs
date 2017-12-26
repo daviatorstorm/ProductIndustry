@@ -38,11 +38,9 @@ namespace SIENN.WebApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(ProductDto entity)
+        public IActionResult Update([FromBody] ProductCategoryDto entity)
         {
-            // Implement Update in repository
-
-            return Ok();
+            return Ok(_productCategoryService.Update(entity));
         }
 
         [HttpDelete]

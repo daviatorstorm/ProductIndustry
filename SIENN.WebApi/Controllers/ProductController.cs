@@ -15,13 +15,13 @@ namespace SIENN.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllAvailable()
+        public IActionResult GetAll()
         {
             return Ok(_productService.GetAll());
         }
 
         [HttpGet("available")]
-        public IActionResult GetAll()
+        public IActionResult GetAllAvailable()
         {
             return Ok(_productService.GetAllAvailable());
         }
@@ -45,11 +45,9 @@ namespace SIENN.WebApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(ProductDto entity)
+        public IActionResult Update([FromBody] ProductDto entity)
         {
-            // Implement Update in repository
-
-            return Ok();
+            return Ok(_productService.Update(entity));
         }
 
         [HttpDelete]

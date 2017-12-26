@@ -44,6 +44,13 @@ namespace SIENN.Services
             return newEntity;
         }
 
+        public virtual TDto Update(TDto entity)
+        {
+            var newEntity = Mapper.Map<TDto>(_uof.GetRepository<TEntity>().Update(Mapper.Map<TEntity>(entity)));
+            _uof.SaveChanges();
+            return newEntity;
+        }
+
         public virtual void Remove(Guid id)
         {
             _uof.GetRepository<TEntity>().Remove(Mapper.Map<TEntity>(Get(id)));

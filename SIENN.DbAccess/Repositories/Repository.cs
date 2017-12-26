@@ -8,11 +8,13 @@ namespace SIENN.DbAccess.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : CodeEntity
     {
-        public DbSet<TEntity> _entities;
+        public readonly DbSet<TEntity> _entities;
+        protected readonly SIENNDbContext _context;
 
         public Repository(SIENNDbContext context)
         {
             _entities = context.Set<TEntity>();
+            _context = context;
         }
 
         public virtual TEntity Get(Guid id)
@@ -48,6 +50,11 @@ namespace SIENN.DbAccess.Repositories
         public virtual TEntity Add(TEntity entity)
         {
             return _entities.Add(entity).Entity;
+        }
+
+        public virtual TEntity Update(TEntity entity)
+        {
+            return _entities.Update(entity).Entity;
         }
 
         public virtual void Remove(TEntity entity)

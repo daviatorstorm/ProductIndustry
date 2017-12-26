@@ -14,6 +14,7 @@ namespace SIENN.Services
         IEnumerable<TDto> GetRange(int start, int count);
 
         TDto Add(TDto entity);
+        TDto Update(TDto entity);
         void Remove(Guid id);
     }
 }

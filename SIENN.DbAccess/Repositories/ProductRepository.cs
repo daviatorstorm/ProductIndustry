@@ -19,6 +19,8 @@ namespace SIENN.DbAccess.Repositories
                 .Include(x => x.Unit);
         }
 
+        public override IQueryable<Product> GetAll() => _setWithIncludes;
+
         public override IQueryable<Product> GetFiltered<TFilter>(TFilter filter)
         {
             var newFilter = filter as ProductFilter;
@@ -40,9 +42,21 @@ namespace SIENN.DbAccess.Repositories
             return source;
         }
 
+        public override Product Update(Product entity)
+        {
+            var newIds = entity.Categories.Select(x => x.CategoryCode);
+            var categoriesToDelete = _context.Set<CategoryProduct>().Where(x => !newIds.Contains(x.CategoryCode)).ToList();
+            entity.Categories = entity.Categories.Where(x => !categoriesToDelete.Select(y => y.CategoryCode).Contains(x.CategoryCode)).ToList();
+
+            _context.RemoveRange(categoriesToDelete);
+            _context.Set<CategoryProduct>().AddRange(entity.Categories);
+
+            return base.Update(entity);
+        }
+
         public override Product Get(Guid id)
         {
-            return _setWithIncludes.FirstOrDefault(x => x.Equals(id));
+            return _setWithIncludes.FirstOrDefault(x => x.Code == id);
         }
     }
 }
