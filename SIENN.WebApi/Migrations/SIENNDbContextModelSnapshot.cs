@@ -20,6 +20,19 @@ namespace SIENN.WebApi.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("SIENN.DbAccess.Models.CategoryProduct", b =>
+                {
+                    b.Property<Guid>("CategoryCode");
+
+                    b.Property<Guid>("ProductCode");
+
+                    b.HasKey("CategoryCode", "ProductCode");
+
+                    b.HasIndex("ProductCode");
+
+                    b.ToTable("CategoryProduct");
+                });
+
             modelBuilder.Entity("SIENN.DbAccess.Models.Product", b =>
                 {
                     b.Property<Guid>("Code")
@@ -53,11 +66,7 @@ namespace SIENN.WebApi.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("ProductCode");
-
                     b.HasKey("Code");
-
-                    b.HasIndex("ProductCode");
 
                     b.ToTable("Categories");
                 });
@@ -86,6 +95,19 @@ namespace SIENN.WebApi.Migrations
                     b.ToTable("Units");
                 });
 
+            modelBuilder.Entity("SIENN.DbAccess.Models.CategoryProduct", b =>
+                {
+                    b.HasOne("SIENN.DbAccess.Models.ProductCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryCode")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SIENN.DbAccess.Models.Product", "Product")
+                        .WithMany("Categories")
+                        .HasForeignKey("ProductCode")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SIENN.DbAccess.Models.Product", b =>
                 {
                     b.HasOne("SIENN.DbAccess.Models.ProductType", "Type")
@@ -97,13 +119,6 @@ namespace SIENN.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("UnitCode")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SIENN.DbAccess.Models.ProductCategory", b =>
-                {
-                    b.HasOne("SIENN.DbAccess.Models.Product")
-                        .WithMany("Categories")
-                        .HasForeignKey("ProductCode");
                 });
 #pragma warning restore 612, 618
         }

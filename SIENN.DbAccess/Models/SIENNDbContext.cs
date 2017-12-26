@@ -13,5 +13,13 @@ namespace SIENN.DbAccess.Models
         public DbSet<ProductUnit> Units { get; set; }
         public DbSet<ProductCategory> Categories { get; set; }
         public DbSet<ProductType> Types { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CategoryProduct>()
+                .HasKey(x => new { x.CategoryCode, x.ProductCode });
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

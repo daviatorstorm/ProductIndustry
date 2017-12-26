@@ -14,7 +14,7 @@ namespace SIENN.DbAccess.Repositories
         public ProductRepository(SIENNDbContext context) : base(context)
         {
             _setWithIncludes = _entities
-                .Include(x => x.Categories)
+                .Include(x => x.Categories).ThenInclude(x => x.Category)
                 .Include(x => x.Type)
                 .Include(x => x.Unit);
         }
@@ -26,7 +26,7 @@ namespace SIENN.DbAccess.Repositories
 
             if (newFilter.Category.HasValue)
             {
-                source = source.Where(x => x.Categories.Any(y => y.Code == newFilter.Category.Value));
+                source = source.Where(x => x.Categories.Any(y => y.CategoryCode == newFilter.Category.Value));
             }
             if (newFilter.Category.HasValue)
             {
